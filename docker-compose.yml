@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+
+  postgres:
+    image: postgres:15
+    container_name: parking-postgres
+    restart: always
+    environment:
+      POSTGRES_DB: parking-control-db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  api:
+    build: .
+    container_name: parking-api
+    restart: always
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+
+volumes:
+  postgres_data:
